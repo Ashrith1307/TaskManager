@@ -1,10 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const tasks = require("./models/tasks");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(express.json()); //Middleware
-
 // MongoDB Connection
 mongoose
   .connect(
