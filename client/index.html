@@ -65,12 +65,13 @@
 
               taskCard.innerHTML = `
                     <span>${title}</span>
-                    <span>${description}</span>
+                    <span class="text-sm text-gray-600">${description}</span>
                     <button class="text-red-500 hover:text-red-700 font-semibold delete-btn">Delete</button>
                   `;
 
               tasksContainer.appendChild(taskCard);
               taskTitleInput.value = ""; // Clear input
+              taskDesc.value = "";
             });
 
             // Delete functionality using event delegation
