@@ -24,11 +24,11 @@ mongoose
 
 // inserting a task
 app.post("/tasks", async (req, res) => {
-  const { taskTitle } = req.body;
+  const { title, description } = req.body;
   try {
-    const newtask = tasks({ title: taskTitle });
+    const newtask = tasks({ title: title, description: description });
     await newtask.save();
-    res.status(200).json({ message: "Added task : ", taskTitle });
+    res.status(200).json({ message: "Added task : ", title, description });
   } catch (err) {
     res.status(500).json({ message: "Error in Adding task: ", err });
   }
