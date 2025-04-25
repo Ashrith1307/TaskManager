@@ -22,6 +22,7 @@ taskForm.addEventListener("submit", async function (e) {
     if (response.ok) {
       taskTitleInput.value = "";
       taskDesc.value = "";
+      loadTasks();
     }
   } catch (error) {
     console.error("Error Adding Tasks");
@@ -29,11 +30,6 @@ taskForm.addEventListener("submit", async function (e) {
 });
 
 // Delete functionality using event delegation
-tasksContainer.addEventListener("click", function (e) {
-  if (e.target.classList.contains("delete-btn")) {
-    e.target.parentElement.remove();
-  }
-});
 async function loadTasks() {
   try {
     const response = await fetch("http://localhost:5000/tasks");
@@ -44,7 +40,8 @@ async function loadTasks() {
     tasks.forEach((task) => {
       const taskCard = document.createElement("div");
       taskCard.className =
-        "bg-white p-4 rounded shadow flex justify-between items-start mb-3";
+        "task-card bg-white p-4 rounded shadow flex justify-between items-start mb-3";
+      taskCard.dataset.id = task._id;
 
       taskCard.innerHTML = `
 <div>
@@ -60,4 +57,22 @@ async function loadTasks() {
     console.error("Failed to load tasks:", error);
   }
 }
+
+tasksContainer.addEventListener("click", async function (e) {
+  if (e.target.classList.contains("delete-btn")) {
+    const taskcard = e.target.closest(".task-card");
+    const taskid = taskcard.dataset.id;
+
+    try {
+      const response = await fetch(`http://localhost:5000/tasks/${taskid}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        taskcard.remove();
+      }
+    } catch (error) {
+      console.error(`Error in Deleting the task: ${taskid}`);
+    }
+  }
+});
 window.addEventListener("DOMContentLoaded", loadTasks);
